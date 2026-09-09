@@ -89,7 +89,7 @@ names:
 | Service | Database | Role |
 |---------|----------|------|
 | auth-service | `clickkart_auth` | `clickkart_auth_app` |
-| notification-service | `clickkart_notification` | `clickkart_notification_app` |
+| user-service | `clickkart_user` | `clickkart_user_app` |
 | audit-log-service | `clickkart_audit_log` | `clickkart_audit_log_app` |
 
 Each role owns exactly one database, and `CONNECT` is revoked from `PUBLIC` on the other two, so a
