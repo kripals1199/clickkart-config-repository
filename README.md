@@ -60,8 +60,20 @@ for automatically.
 1. Check out the environment branch you're changing (e.g. `git checkout dev`).
 2. Edit the relevant `clickkart-<service>.properties` file (or `application.properties` for a
    global default).
-3. Commit and push.
-4. The running service picks up the change on its next Config Server refresh (or restart, for
+3. **If you removed an indexed property, renumber the rest.** Spring binds `foo[0]`, `foo[1]`,
+   `foo[2]` by walking up from zero and stopping at the first missing index - everything after a
+   gap is dropped with no warning, no error and nothing in the logs. Deleting the Gateway's
+   `routes[15]` when Cart Service was retired would have taken routes 16-21 with it: admin,
+   brands, promotions, delivery and the Payment Service docs, all present in the file and none of
+   them routed, on a Gateway reporting itself healthy.
+
+   ```bash
+   node scripts/check-indexed-properties.js
+   ```
+
+   from the platform repo, against a checkout of this one. It fails on any gap, in any file.
+4. Commit and push.
+5. The running service picks up the change on its next Config Server refresh (or restart, for
    properties not wired to `@RefreshScope`/`/actuator/refresh`).
 
 To promote a change through environments (dev -> test -> qa -> prod), apply the same edit on
